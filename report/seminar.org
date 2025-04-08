@@ -1,0 +1,12 @@
+#+TITLE: XMPP
+#+AUTHOR: Nikola Brković
+#+OPTIONS: toc:nil
+#+bibliography: seminar.bib
+
+* Namen protokola
+
+[cite:@latex2e]
+
+* Literatura
+
+#+print_bibliography: 

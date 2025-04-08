@@ -2,4 +2,5 @@
 
 report/*
 !report/seminar.tex
+!report/seminar.org
 !report/seminar.bib
