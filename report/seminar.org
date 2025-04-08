@@ -45,6 +45,19 @@ graph TD
 #+ATTR_LATEX: :placement [H]
 #+results: fig:local_server
 
+#+name: fig:local_server
+#+begin_src mermaid :file images/local-server.png
+graph TD
+ D[jabber.domena.si]
+
+ D <--> A("ana#64;jabber.domena.si")
+ D <--> B("borut#64;jabber.domena.si")
+#+end_src
+
+#+caption: Komunikacija med uporabniki na istem strežniku
+#+ATTR_LATEX: :placement [H]
+#+results: fig:local_server
+
 * Opis specifikacije
 
 * Format sporočil

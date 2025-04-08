@@ -7,3 +7,5 @@ report/*
 
 !report/beamer.org
 !report/beamer.tex
+
+!report/images
