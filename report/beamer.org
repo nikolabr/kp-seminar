@@ -1,0 +1,32 @@
+#+TITLE: XMPP
+#+AUTHOR: Nikola Brković
+#+header: :exports results
+#+LANGUAGE: sl
+#+LATEX_HEADER: \usepackage[]{babel}
+#+LATEX_HEADER: \usepackage{float}
+#+beamer_theme: Warsaw
+
+* Namen protokola
+
+* Arhitektura protokola
+
+* Scenarij komunikacije
+
+#+name: fig:local_server
+#+begin_src mermaid :file images/local-server.png
+graph TD
+ D[jabber.domena.si]
+
+ D <--> A("ana#64;jabber.domena.si")
+ D <--> B("borut#64;jabber.domena.si")
+#+end_src
+
+#+caption: Komunikacija med uporabniki na istem strežniku
+#+ATTR_LATEX: :placement [H]
+#+results: fig:local_server
+
+* Opis specifikacije
+
+* Format sporočil
+
+* Literatura

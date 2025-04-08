@@ -1,6 +1,9 @@
 *~
 
 report/*
-!report/seminar.tex
 !report/seminar.org
+!report/seminar.tex
 !report/seminar.bib
+
+!report/beamer.org
+!report/beamer.tex

@@ -1,11 +1,53 @@
 #+TITLE: XMPP
 #+AUTHOR: Nikola Brković
 #+OPTIONS: toc:nil
+#+header: :exports results
+#+LANGUAGE: sl
+#+LATEX_HEADER: \usepackage[]{babel}
+#+LATEX_HEADER: \usepackage{float}
 #+bibliography: seminar.bib
 
 * Namen protokola
 
-[cite:@latex2e]
+XMPP je protokol, namenjen izmenjavi strukturiranih podatkov v
+približno realnem času med dvemi ali več entitetami
+[cite:@rfc6120]. Kratica XMPP pomeni /Extensible Messaging and Presence
+Protocol/, oziroma v slovenščini - razširljiv protokol sporočil in
+prisotnosti.
+
+Čeprav je v teoriji XMPP splošno-namenski protokol za izmenjevanje
+sporočil, v praksi se pa največkrat uporablja za hipno sporočanje
+(/ang./ /instant messaging/ oziroma /IM/) in aplikacije, ki ponujajo
+funkcionalnost klepetanja.
+
+* Arhitektura protokola
+
+Pri arhitekturi protokola so se ustvarjalci protokola XMPP zgledovali
+po protokolu SMTP. Udeleženci v protokolu XMPP so povezani v
+porazdeljenem omrežju. Vsak udeleženec je bodisi strežnik bodisi
+klient. Komunikacija lahko poteka ali med strežniki ali med strežniki
+in klienti. En klient je lahko povezan na samo en strežnik in z
+drugimi klienti lahko komunicira le posredno prek (enega ali več)
+strežnikov.
+
+* Scenarij komunikacije
+
+#+name: fig:local_server
+#+begin_src mermaid :file images/local-server.png
+graph TD
+ D[jabber.domena.si]
+
+ D <--> A("ana#64;jabber.domena.si")
+ D <--> B("borut#64;jabber.domena.si")
+#+end_src
+
+#+caption: Komunikacija med uporabniki na istem strežniku
+#+ATTR_LATEX: :placement [H]
+#+results: fig:local_server
+
+* Opis specifikacije
+
+* Format sporočil
 
 * Literatura
 
