@@ -10,7 +10,7 @@
 * Namen protokola
 
 XMPP je protokol, namenjen izmenjavi strukturiranih podatkov v
-približno realnem času med dvemi ali več entitetami
+približno realnem času med dvema ali več entitetami
 [cite:@rfc6120]. Kratica XMPP pomeni /Extensible Messaging and
 Presence Protocol/, oziroma v slovenščini - razširljiv protokol za
 sporočanje in prisotnost.
@@ -45,9 +45,9 @@ uporabnika imajo JID oblike ~<uporabnik>@<strežnik>/<vir>~
 * Scenarij komunikacije
 
 Ko govorimo o komunikaciji med uporabniki, lahko govorimo o
-komunikaciji med uporabniki, prijavljenimi na istem strežniku
-[[fig:local_server]], ali med uporabniki, prijavljenimi na različnih
-strežnikih [[fig:cross_server]].
+komunikaciji med uporabniki, prijavljenimi na istem strežniku, kot je
+prikazano na Sliki [[fig:local_server]], ali med uporabniki, prijavljenimi
+na različnih strežnikih, kot je prikazano na Sliki [[fig:cross_server]].
 
 #+name: fig:local_server
 #+begin_src mermaid :file images/local-server.png
@@ -107,18 +107,21 @@ in svoje zmožnosti oglašujejo drugim entitetam.
 V tem RFC-ju je definirano:
 
 - vzpostavljanje in rušenje povezave med udeleženci v protokolu,
-- tri osnovne vrste sporočil: ~<message>~, ~<presence>~ in ~<iq>~,
+- tri osnovne vrste sporočil: ~<message/>~, ~<presence/>~ in ~<iq/>~
+  (definirane so le vrste sporočil, struktura sporočil je pa opisana v
+  XMPP-IM)
 - vrste napak,
-- ter atribute sporočil. Najbolj pomembna atributa sta ~to~ pa ~from~,
-  ki identificirata pošiljatelja in prejemnika sporočila
+- ter atribute sporočil. Najbolj pomembni atributi so ~from~, ~to~ in
+  ~id~, ki identificirata pošiljatelja sporočila, prejemnika sporočila
+  ter unikatni identifikator toka.
 
 Dve entiteti, ki želita komunicirati po protokolu XMPP morata
 vzpostaviti trajno povezavo po protokolu TCP, kateri pravimo /tok XML/
 (ang. /XML stream/). Tok je sestavljen iz posameznih sporočil, katerim
 pravimo /stance XML/ (ang. /XML stanzas/). Tako posamezne stance kot
 tudi celoten tok morajo predstavljati sintaksno veljavno besedilo
-formata XML. Primer toka je prikazan v [[https://xmpp.org/rfcs/rfc6120.html#streams-fundamentals][specifikaciji XMPP-CORE, v
-razdelku "4.1 Stream Fundamentals"]].
+formata XML. Primer toka je prikazan v [[https://xmpp.org/rfcs/rfc6120.html#streams-fundamentals][specifikaciji XMPP-CORE, pod
+razdelkom "4.1 Stream Fundamentals"]]. [cite:@rfc6120]
 
 Pri vzpostavitvi toka se lahko udeleženca dogovorita za šifriranje
 toka s protokolom TLS, ali zahtevata avtentikacijo po protokolu SASL,
@@ -134,7 +137,7 @@ XMPP-IM omogoča povezovanje z drugimi uporabniki oziroma kontakti. V
 žargonu XMPP pravimo seznamu kontaktov /spisek/ (ang. /roster/). Vsak
 uporabnik ima svoj lastni zasebni spisek. Spisek je shranjen na
 strežniku, na katerega je uporabnik prijavljen. Vnose v spisek
-dodajamo in odstranjujemo z uporabo sporočil vrste ~<iq>~.
+dodajamo in odstranjujemo z uporabo sporočil vrste ~<iq/>~.
 
 XMPP-IM omogoča tudi naročanje na prisotnost drugih uporabnikov
 (ang. /presence subscription/). Recimo, da se je France naročil na
@@ -142,35 +145,61 @@ Julijino prisotnost. Če Julija strežniku sporoči, da se je njena
 prisotnost spremenila, bo strežnik Franceta obvestil o Julijini novi
 prisotnosti. Ta obvestila se prenešajo tudi med različnimi strežniki.
 
-Definiran je tudi koncept klepetalnih sej (ang. /Chat
-Session/). Med dvema entitetoma obstaja lahko ena seja, vrste
-"chat". Omogočeni so pa tudi skupinski klepeti - seja vrste
-"groupchat". Informacija o klepetalni seji je del metapodatkov
-sporočila vrste ~<message>~.
+Definiran je tudi koncept klepetalnih sej (ang. /Chat Session/). Med
+dvema entitetoma obstaja lahko ena seja, vrste ~chat~. Omogočeni so
+pa tudi skupinski klepeti - seja vrste ~groupchat~. Informacija o
+klepetalni seji je del metapodatkov sporočila vrste
+~<message/>~. [cite:@rfc6121]
 
 ** XMPP-ADDR
 
 Specifikacija XMPP-ADDR določa, kako so črke izven kodirne tabele
 ASCII predstavljene v naslovih strežnikov oziroma uporabnikov. Vse
-črke, ki niso del ASCII-ja, morajo biti del Unicodea.
+črke, ki niso del ASCII-ja, morajo biti del Unicodea. [cite:@rfc7622]
+
+** Razširitve
+
+Spodaj je seznam najbolj pogostih razširitev, ki so opisane v XEP-jih.
+
+- [[https://xmpp.org/extensions/xep-0045.html][Multi-User Chat (XEP-0045)]] - podrobneje določa delovanje skupinskih
+  klepetov, ki so omenjeni že v XMPP-IM [cite:@saint-andre2002muc],
+- [[https://xmpp.org/extensions/xep-0166.html][Jingle (XEP-0166)]] - omogoča dogovarjanje med entitetami preko XMPP
+  za neposredne medijske seje, ki potekajo po nekem drugem
+  kanalu. Uporablja se predvsem za glasovne ali video
+  klepete. [cite:@ludwig2005jingle]
+- [[https://xmpp.org/extensions/xep-0234.html][Jingle File Transfer (XEP-0234)]] - določa format seje Jingle za
+  prenos datotek [cite:@saint-andre2008jingle-ft]
 
 * Format sporočil
 
 Vsa sporočila v protokolu XMPP so predstavljena v formatu
-XML. Format osnovnih vrst sporočil je opisan spodaj.
+XML. Format osnovnih vrst sporočil oziroma stanc je opisan spodaj.
 
 ** Message
 
-Sporočilo te vrste je sestavljeno iz XML elementa ~<message>~.
+Stanca te vrste je sestavljena iz XML elementa ~<message/>~. XML
+element lahko vsebuje atribute - predvsem atribute ~from~, ~to~ in
+~type~. Pomeni teh atributov so bili razloženi že v prejšnjih
+razdelkih.
+
+Telo elementa ~<message/>~ vsebuje element ~<body/>~, ki vsebuje
+dejansko vsebino sporočila. Vsebuje lahko tudi element ~<subject/>~, ki
+vsebuje zadevo sporočila.
 
 ** Presence
 
+Stanca te vrste je sestavljena iz XML elementa ~<presence/>~. V
+primeru, ko se uporabnik prvič poveže na strežnik je lahko stanca celo
+prazen XML element. Ponavadi pa vsebuje atributa ~to~ pa ~from~. Telo
+stance lahko vsebuje elementa ~<show/>~ ali ~<status/>~, ki bolj
+podrobno opisujeta prisotnost oziroma stanje uporabnika.
+
 ** IQ (Info/Query)
 
-Ta sporočila so namenjena poizvedbam in shranjevanju podatkov na
+Te stance so namenjene poizvedbam in shranjevanju podatkov na
 drugih entitetah.
 
-Sporočilo te vrste je sestavljeno iz XML elementa ~<iq>~. Element mora
+Stanca te vrste je sestavljeno iz XML elementa ~<iq/>~. Element mora
 vsebovati atribut ~id~, ki določa identifikator podatkov, in atribut
 ~type~, ki določa vrsto zahteve. Poznamo vrste ~get~, ~set~, ~result~
 in ~error~. Ko sprožimo zahtevo, izberemo vrsto ~get~ ali ~set~, druga
@@ -180,4 +209,4 @@ elementa vsebuje vrednosti podatkov.
 
 * Literatura
 
-#+print_bibliography:
+#+print_bibliography: 

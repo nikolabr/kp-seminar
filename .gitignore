@@ -4,6 +4,7 @@ report/*
 !report/seminar.org
 !report/seminar.tex
 !report/seminar.bib
+!report/sl.csl
 
 !report/beamer.org
 !report/beamer.tex

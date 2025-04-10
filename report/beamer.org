@@ -1,32 +1,180 @@
 #+TITLE: XMPP
 #+AUTHOR: Nikola Brković
+#+options: H:2 toc:nil
 #+header: :exports results
 #+LANGUAGE: sl
+#+STARTUP: beamer
+#+LATEX_CLASS: beamer
 #+LATEX_HEADER: \usepackage[]{babel}
-#+LATEX_HEADER: \usepackage{float}
-#+beamer_theme: Warsaw
+#+LATEX_HEADER: \usepackage{fvextra}
+#+beamer_theme: Dresden
+#+bibliography: seminar.bib
 
-* Namen protokola
+* Namen in arhitektura protokola
 
-* Arhitektura protokola
+** Namen protokola
+
+- /Extensible Messaging and Presence Protocol/
+- "Protokol, namenjen izmenjavi strukturiranih podatkov v približno
+  realnem času med dvema ali več entitetami"
+- V praksi predvsem hipno sporočanje (/Instant Messaging/)
+
+** Arhitektura protokola
+
+- Zgled: SMTP
+- Distributirano omrežje
+- Vloge:
+  - strežnik
+  - uporabnik
+  - (vir)
+
+** Arhitektura protokola
+
+- Identifikator: JID (/Jabber ID/)
+- Strežnik: JID je enak domeni (~jabber.si~)
+- Uporabnik: ~<uporabnik>@<strežnik>~ (~julija@jabber.si~)
+- Vir: ~<uporabnik>@<strežnik>/<vir>~ (~julija@jabber.si/prenosnik~)
 
 * Scenarij komunikacije
+
+** Lokalni uporabniki
 
 #+name: fig:local_server
 #+begin_src mermaid :file images/local-server.png
 graph TD
- D[jabber.domena.si]
+ D[fa:fa-server jabber.si]
 
- D <--> A("ana#64;jabber.domena.si")
- D <--> B("borut#64;jabber.domena.si")
+ D <--> A("fa:fa-user france#64;jabber.si")
+ D <--> B("fa:fa-user julija#64;jabber.si")
 #+end_src
 
 #+caption: Komunikacija med uporabniki na istem strežniku
+#+label: fig:local_server
 #+ATTR_LATEX: :placement [H]
 #+results: fig:local_server
 
+** Oddaljeni uporabniki
+
+#+name: fig:cross_server
+#+begin_src mermaid :file images/cross-server.png
+graph LR
+ D[fa:fa-server jabber.si]
+ A("fa:fa-user france#64;jabber.si")
+
+ E[fa:fa-server xmpp.im.si]
+ B("fa:fa-user julija#64;xmpp.im.si")
+
+ A <--> D
+ E <--> B
+
+ D <--> E
+#+end_src
+
+#+caption: Komunikacija med uporabniki na različnih strežnikih
+#+label: fig:cross_server
+#+ATTR_LATEX: :placement [H]
+#+results: fig:cross_server
+
 * Opis specifikacije
+
+** Opis specifikacije
+
+- XMPP-CORE (RFC 6120) [cite:@rfc6120]
+- XMPP-IM (RFC 6121) [cite:@rfc6121]
+- XMPP-ADDR (RFC 7622) [cite:@rfc7622]
+- Razširitve (XEP)
+
+** XMPP-CORE
+
+- Povezava po TCP: tok XML
+- Posamezno poročilo: stanca XML
+- Vrste sporočil: ~<message/>~, ~<presence/>~, ~<iq/>~
+- Omogoča TLS ali SASL
+
+** XMPP-IM
+
+- Klepetalne seje (~chat~ ali ~groupchat~)
+- Spisek (/roster/)
+- Naročanje na prisotnost
+
+** XMPP-ADDR
+
+- Kodiranje črk, ki so del kodirnega sistema Unicode
+
+** Razširitve
+
+- [[https://xmpp.org/extensions/xep-0045.html][Multi-User Chat (XEP-0045)]] - podrobneje določa delovanje skupinskih
+  klepetov, ki so omenjeni že v XMPP-IM [cite:@saint-andre2002muc],
+- [[https://xmpp.org/extensions/xep-0166.html][Jingle (XEP-0166)]] - omogoča dogovarjanje med entitetami preko XMPP
+  za neposredne medijske seje, ki potekajo po nekem drugem
+  kanalu. Uporablja se predvsem za glasovne ali video
+  klepete. [cite:@ludwig2005jingle]
+- [[https://xmpp.org/extensions/xep-0234.html][Jingle File Transfer (XEP-0234)]] - določa format seje Jingle za
+  prenos datotek [cite:@saint-andre2008jingle-ft]
 
 * Format sporočil
 
+** Message
+
+#+begin_src xml
+  <message from='france@jabber.si/hiša'
+	      id='ju2ba41c'
+	      to='julija@jabber.si'
+	      type='chat'
+	      xml:lang='si'>
+    <body>
+      Sijalo sonce je podobe zale,
+      pogleda tvojga pil sem žarke mile,
+      ljubezni so cvetlice kal pognale.
+    </body>
+  </message>
+#+end_src
+
+[cite:@sonetnivenec]
+
+** Presence
+
+#+begin_src xml
+  <presence xml:lang='si'>
+    <show>away</show>
+    <status>
+      Oblak ne ve, in val ne kam,
+      kam nese me obup, ne znam.
+    </status>
+  </presence>
+#+end_src
+
+[cite:@sonetnivenec]
+
+** IQ (Info/Query)
+
+Zahteva za pridobivanje spiska
+
+#+begin_src xml
+  <iq from='france@jabber.si/hiša'
+      id='bv1bs71f'
+      type='get'>
+    <query xmlns='jabber:iq:roster'/>
+  </iq>
+#+end_src
+
+** IQ (Info/Query)
+
+Odgovor strežnika na zahtevo
+
+#+begin_src xml
+<iq id='bv1bs71f'
+       to='france@jabber.si/hiša'
+       type='result'>
+    <query xmlns='jabber:iq:roster' ver='ver7'>
+      <item jid='matija@jabber.si'/>
+      <item jid='julija@xmpp.si'/>
+    </query>
+  </iq>
+#+end_src
+
 * Literatura
+
+** Literatura
+
+#+print_bibliography: 

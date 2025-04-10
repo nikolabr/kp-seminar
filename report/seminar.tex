@@ -1,4 +1,4 @@
-% Created 2025-04-10 Thu 08:08
+% Created 2025-04-10 Thu 21:27
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -12,7 +12,8 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
-\usepackage[, slovene]{babel}
+\usepackage[slovene]{babel}
+\usepackage[]{babel}
 \usepackage{float}
 \author{Nikola Brković}
 \date{\today}
@@ -29,10 +30,10 @@
 \maketitle
 
 \section{Namen protokola}
-\label{sec:orgfcb6b18}
+\label{sec:org576612c}
 
 XMPP je protokol, namenjen izmenjavi strukturiranih podatkov v
-približno realnem času med dvemi ali več entitetami
+približno realnem času med dvema ali več entitetami
 (Peter Saint-Andre, 2011). Kratica XMPP pomeni \emph{Extensible Messaging and
 Presence Protocol}, oziroma v slovenščini - razširljiv protokol za
 sporočanje in prisotnost.
@@ -43,7 +44,7 @@ sporočil, v praksi se pa največkrat uporablja za hipno sporočanje
 funkcionalnost klepetanja.
 
 \section{Arhitektura protokola}
-\label{sec:orge4c8fb1}
+\label{sec:org4ba672e}
 
 Pri arhitekturi protokola so se ustvarjalci protokola XMPP zgledovali
 po protokolu SMTP. Udeleženci v protokolu XMPP so povezani v
@@ -66,27 +67,27 @@ uporabnika imajo JID oblike \texttt{<uporabnik>@<strežnik>/<vir>}
 (npr. \texttt{julija@jabber.si/prenosnik}).
 
 \section{Scenarij komunikacije}
-\label{sec:orgb609060}
+\label{sec:orgd392035}
 
 Ko govorimo o komunikaciji med uporabniki, lahko govorimo o
-komunikaciji med uporabniki, prijavljenimi na istem strežniku
-\ref{fig:org360b3d3}, ali med uporabniki, prijavljenimi na različnih
-strežnikih \ref{fig:org4adcf98}.
+komunikaciji med uporabniki, prijavljenimi na istem strežniku, kot je
+prikazano na Sliki \ref{fig:org228fbb5}, ali med uporabniki, prijavljenimi
+na različnih strežnikih, kot je prikazano na Sliki \ref{fig:org52e02e3}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{images/local-server.png}
-\caption{\label{fig:org360b3d3}Komunikacija med uporabniki na istem strežniku}
+\caption{\label{fig:org228fbb5}Komunikacija med uporabniki na istem strežniku}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{images/cross-server.png}
-\caption{\label{fig:org4adcf98}Komunikacija med uporabniki na različnih strežnikih}
+\caption{\label{fig:org52e02e3}Komunikacija med uporabniki na različnih strežnikih}
 \end{figure}
 
 \section{Opis specifikacije}
-\label{sec:org5b1ac5e}
+\label{sec:orgf2f7830}
 
 Protokol XMPP je opisan v več ločenih RFC-jih:
 
@@ -108,13 +109,15 @@ protokola XMPP (strežniki, klienti) implementirajo le določene XEP-je
 in svoje zmožnosti oglašujejo drugim entitetam.
 
 \subsection{XMPP-CORE}
-\label{sec:orgdc6485f}
+\label{sec:org59676f3}
 
 V tem RFC-ju je definirano:
 
 \begin{itemize}
 \item vzpostavljanje in rušenje povezave med udeleženci v protokolu,
-\item tri osnovne vrste sporočil: \texttt{<message>}, \texttt{<presence>} in \texttt{<iq>},
+\item tri osnovne vrste sporočil: \texttt{<message>}, \texttt{<presence>} in \texttt{<iq>}
+(definirane so le vrste sporočil, struktura sporočil je pa opisana v
+XMPP-IM)
 \item vrste napak,
 \item ter atribute sporočil. Najbolj pomembna atributa sta \texttt{to} pa \texttt{from},
 ki identificirata pošiljatelja in prejemnika sporočila
@@ -125,15 +128,15 @@ vzpostaviti trajno povezavo po protokolu TCP, kateri pravimo \emph{tok XML}
 (ang. \emph{XML stream}). Tok je sestavljen iz posameznih sporočil, katerim
 pravimo \emph{stance XML} (ang. \emph{XML stanzas}). Tako posamezne stance kot
 tudi celoten tok morajo predstavljati sintaksno veljavno besedilo
-formata XML. Primer toka je prikazan v \href{https://xmpp.org/rfcs/rfc6120.html\#streams-fundamentals}{specifikaciji XMPP-CORE, v
-razdelku "4.1 Stream Fundamentals"}.
+formata XML. Primer toka je prikazan v \href{https://xmpp.org/rfcs/rfc6120.html\#streams-fundamentals}{specifikaciji XMPP-CORE, pod
+razdelkom "4.1 Stream Fundamentals"}. (Peter Saint-Andre, 2011)
 
 Pri vzpostavitvi toka se lahko udeleženca dogovorita za šifriranje
 toka s protokolom TLS, ali zahtevata avtentikacijo po protokolu SASL,
 vendar je ta funkcionalnost izven obsega tega poročila.
 
 \subsection{XMPP-IM}
-\label{sec:orgabe2eeb}
+\label{sec:org93ca5d0}
 
 Ta specifikacija predstavlja razširitev osnovne specifikacije, in
 predpostavlja, da so entitete, udeležene v protokolu, že vzpostavile
@@ -151,40 +154,69 @@ Julijino prisotnost. Če Julija strežniku sporoči, da se je njena
 prisotnost spremenila, bo strežnik Franceta obvestil o Julijini novi
 prisotnosti. Ta obvestila se prenešajo tudi med različnimi strežniki.
 
-Definiran je tudi koncept klepetalnih sej (ang. \emph{Chat
-Session}). Med dvema entitetoma obstaja lahko ena seja, vrste
-"chat". Omogočeni so pa tudi skupinski klepeti - seja vrste
-"groupchat". Informacija o klepetalni seji je del metapodatkov
-sporočila vrste \texttt{<message>}.
+Definiran je tudi koncept klepetalnih sej (ang. \emph{Chat Session}). Med
+dvema entitetoma obstaja lahko ena seja, vrste \texttt{chat}. Omogočeni so
+pa tudi skupinski klepeti - seja vrste \texttt{groupchat}. Informacija o
+klepetalni seji je del metapodatkov sporočila vrste
+\texttt{<message>}. (Peter Saint-Andre, 2011a)
 
 \subsection{XMPP-ADDR}
-\label{sec:org5a7c784}
+\label{sec:orge831d87}
 
 Specifikacija XMPP-ADDR določa, kako so črke izven kodirne tabele
 ASCII predstavljene v naslovih strežnikov oziroma uporabnikov. Vse
-črke, ki niso del ASCII-ja, morajo biti del Unicodea.
+črke, ki niso del ASCII-ja, morajo biti del Unicodea. (Peter Saint-Andre, 2015)
+
+\subsection{Razširitve}
+\label{sec:org78cce78}
+
+Spodaj je seznam najbolj pogostih razširitev, ki so opisane v XEP-jih.
+
+\begin{itemize}
+\item \href{https://xmpp.org/extensions/xep-0045.html}{Multi-User Chat (XEP-0045)} - podrobneje določa delovanje skupinskih
+klepetov, ki so omenjeni že v XMPP-IM (Saint-Andre, Peter, 2002),
+\item \href{https://xmpp.org/extensions/xep-0166.html}{Jingle (XEP-0166)} - omogoča dogovarjanje med entitetami preko XMPP
+za neposredne medijske seje, ki potekajo po nekem drugem
+kanalu. Uporablja se predvsem za glasovne ali video
+klepete. (Ludwig, Scott and Beda, Joe and Saint-Andre, Peter and McQueen, Robert and Egan, Sean and Hildebrand, Joe, 2005)
+\item \href{https://xmpp.org/extensions/xep-0234.html}{Jingle File Transfer (XEP-0234)} - določa format seje Jingle za
+prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
+\end{itemize}
 
 \section{Format sporočil}
-\label{sec:org6a4447c}
+\label{sec:org4727620}
 
 Vsa sporočila v protokolu XMPP so predstavljena v formatu
-XML. Format osnovnih vrst sporočil je opisan spodaj.
+XML. Format osnovnih vrst sporočil oziroma stanc je opisan spodaj.
 
 \subsection{Message}
-\label{sec:orgcafadff}
+\label{sec:orge94bb2c}
 
-Sporočilo te vrste je sestavljeno iz XML elementa \texttt{<message>}.
+Stanca te vrste je sestavljena iz XML elementa \texttt{<message>}. XML
+element lahko vsebuje atribute - predvsem atribute \texttt{from}, \texttt{to} in
+\texttt{type}. Pomeni teh atributov so bili razloženi že v prejšnjih
+razdelkih.
+
+Telo elementa \texttt{<message>} vsebuje element \texttt{<body>}, ki vsebuje
+dejansko vsebino sporočila. Vsebuje lahko tudi element \texttt{<subject>}, ki
+vsebuje zadevo sporočila.
 
 \subsection{Presence}
-\label{sec:org5aa712e}
+\label{sec:org44af66f}
+
+Stanca te vrste je sestavljena iz XML elementa \texttt{<presence>}. V
+primeru, ko se uporabnik prvič poveže na strežnik je lahko stanca celo
+prazen XML element. Ponavadi pa vsebuje atributa \texttt{to} pa \texttt{from}. Telo
+stance lahko vsebuje elementa \texttt{<show>} ali \texttt{<status>}, ki bolj
+podrobno opisujeta prisotnost oziroma stanje uporabnika.
 
 \subsection{IQ (Info/Query)}
-\label{sec:orgda41e57}
+\label{sec:orgf731e2d}
 
-Ta sporočila so namenjena poizvedbam in shranjevanju podatkov na
+Te stance so namenjene poizvedbam in shranjevanju podatkov na
 drugih entitetah.
 
-Sporočilo te vrste je sestavljeno iz XML elementa \texttt{<iq>}. Element mora
+Stanca te vrste je sestavljeno iz XML elementa \texttt{<iq>}. Element mora
 vsebovati atribut \texttt{id}, ki določa identifikator podatkov, in atribut
 \texttt{type}, ki določa vrsto zahteve. Poznamo vrste \texttt{get}, \texttt{set}, \texttt{result}
 in \texttt{error}. Ko sprožimo zahtevo, izberemo vrsto \texttt{get} ali \texttt{set}, druga
@@ -193,8 +225,23 @@ uspešna, \texttt{error} pa v primeru, da je zahteva bila neuspešna. Telo
 elementa vsebuje vrednosti podatkov.
 
 \section{Literatura}
-\label{sec:org3acbfa3}
+\label{sec:orge8ee4eb}
+
+\noindent
+Ludwig, Scott and Beda, Joe and Saint-Andre, Peter and McQueen, Robert and Egan, Sean and Hildebrand, Joe (2005). \emph{Jingle}, XMPP Standards Foundation.
 
 \noindent
 Peter Saint-Andre (2011). \emph{{Extensible Messaging and Presence Protocol (XMPP): Core}}, RFC Editor.
+
+\noindent
+Peter Saint-Andre (2011a). \emph{{Extensible Messaging and Presence Protocol (XMPP): Instant Messaging and Presence}}, RFC Editor.
+
+\noindent
+Peter Saint-Andre (2015). \emph{{Extensible Messaging and Presence Protocol (XMPP): Address Format}}, RFC Editor.
+
+\noindent
+Saint-Andre, Peter (2002). \emph{Multi-User Chat}, XMPP Standards Foundation.
+
+\noindent
+Saint-Andre, Peter and Stout, Lance (2008). \emph{Jingle File Transfer}, XMPP Standards Foundation.
 \end{document}
