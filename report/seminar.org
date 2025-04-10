@@ -11,9 +11,9 @@
 
 XMPP je protokol, namenjen izmenjavi strukturiranih podatkov v
 približno realnem času med dvemi ali več entitetami
-[cite:@rfc6120]. Kratica XMPP pomeni /Extensible Messaging and Presence
-Protocol/, oziroma v slovenščini - razširljiv protokol sporočil in
-prisotnosti.
+[cite:@rfc6120]. Kratica XMPP pomeni /Extensible Messaging and
+Presence Protocol/, oziroma v slovenščini - razširljiv protokol za
+sporočanje in prisotnost.
 
 Čeprav je v teoriji XMPP splošno-namenski protokol za izmenjevanje
 sporočil, v praksi se pa največkrat uporablja za hipno sporočanje
@@ -25,43 +25,159 @@ funkcionalnost klepetanja.
 Pri arhitekturi protokola so se ustvarjalci protokola XMPP zgledovali
 po protokolu SMTP. Udeleženci v protokolu XMPP so povezani v
 porazdeljenem omrežju. Vsak udeleženec je bodisi strežnik bodisi
-klient. Komunikacija lahko poteka ali med strežniki ali med strežniki
-in klienti. En klient je lahko povezan na samo en strežnik in z
-drugimi klienti lahko komunicira le posredno prek (enega ali več)
-strežnikov.
+klient. Poznamo tudi entitete, ki jim pravimo viri, ki pripadajo
+določenemu uporabniku. Komunikacija lahko poteka ali med strežniki ali
+med strežniki in klienti. En klient je lahko povezan na samo en
+strežnik in z drugimi klienti lahko komunicira le posredno prek (enega
+ali več) strežnikov.
+
+Vsaka entiteta ima svoj unikatni identifikator oziroma naslov,
+kateremu pravimo /Jabber ID/ oziroma /JID/.
+
+Za strežnike velja, da je njihov JID enak njihovi domeni
+(npr. ~jabber.si~).  JID-ji uporabnikov so oblike
+~<uporabnik>@<strežnik>~ (npr. ~julija@jabber.si~), pri čemer je
+strežnik tisti strežnik, na katerem je račun uporabnika
+prijavljen. Unikatne naprave ali viri, ki so vezane na določenega
+uporabnika imajo JID oblike ~<uporabnik>@<strežnik>/<vir>~
+(npr. ~julija@jabber.si/prenosnik~).
 
 * Scenarij komunikacije
 
-#+name: fig:local_server
-#+begin_src mermaid :file images/local-server.png
-graph TD
- D[jabber.domena.si]
-
- D <--> A("ana#64;jabber.domena.si")
- D <--> B("borut#64;jabber.domena.si")
-#+end_src
-
-#+caption: Komunikacija med uporabniki na istem strežniku
-#+ATTR_LATEX: :placement [H]
-#+results: fig:local_server
+Ko govorimo o komunikaciji med uporabniki, lahko govorimo o
+komunikaciji med uporabniki, prijavljenimi na istem strežniku
+[[fig:local_server]], ali med uporabniki, prijavljenimi na različnih
+strežnikih [[fig:cross_server]].
 
 #+name: fig:local_server
 #+begin_src mermaid :file images/local-server.png
 graph TD
- D[jabber.domena.si]
+ D[fa:fa-server jabber.si]
 
- D <--> A("ana#64;jabber.domena.si")
- D <--> B("borut#64;jabber.domena.si")
+ D <--> A("fa:fa-user france#64;jabber.si")
+ D <--> B("fa:fa-user julija#64;jabber.si")
 #+end_src
 
 #+caption: Komunikacija med uporabniki na istem strežniku
+#+label: fig:local_server
 #+ATTR_LATEX: :placement [H]
 #+results: fig:local_server
+
+#+name: fig:cross_server
+#+begin_src mermaid :file images/cross-server.png
+graph LR
+ D[fa:fa-server jabber.si]
+ A("fa:fa-user france#64;jabber.si")
+
+ E[fa:fa-server xmpp.im.si]
+ B("fa:fa-user julija#64;xmpp.im.si")
+
+ A <--> D
+ E <--> B
+
+ D <--> E
+#+end_src
+
+#+caption: Komunikacija med uporabniki na različnih strežnikih
+#+label: fig:cross_server
+#+ATTR_LATEX: :placement [H]
+#+results: fig:cross_server
 
 * Opis specifikacije
 
+Protokol XMPP je opisan v več ločenih RFC-jih:
+
+- [[https://datatracker.ietf.org/doc/rfc6120/][Extensible Messaging and Presence Protocol (XMPP): Core]] (v
+  nadaljevanju: /XMPP-CORE/)
+- [[https://datatracker.ietf.org/doc/rfc6121/][Extensible Messaging
+  and Presence Protocol (XMPP): Instant Messaging and Presence]] (v
+  nadaljevanju: /XMPP-IM/)
+- [[https://datatracker.ietf.org/doc/rfc7622/][Extensible Messaging and Presence Protocol (XMPP): Address Format]] (v
+  nadaljevanju: /XMPP-ADDR/)
+
+Specifikacija XMPP-CORE predstavlja minimalno potrebno funkcionalnost
+za strežnik oziroma klient, ki implementira XMPP. Poleg teh treh
+RFC-jev je velik del funkcionalnosti XMPP v razširitvah, ki jim
+pravimo /XEP/-ji (/XMPP Extension Protocols/). Implementacije
+protokola XMPP (strežniki, klienti) implementirajo le določene XEP-je
+in svoje zmožnosti oglašujejo drugim entitetam.
+  
+** XMPP-CORE
+
+V tem RFC-ju je definirano:
+
+- vzpostavljanje in rušenje povezave med udeleženci v protokolu,
+- tri osnovne vrste sporočil: ~<message>~, ~<presence>~ in ~<iq>~,
+- vrste napak,
+- ter atribute sporočil. Najbolj pomembna atributa sta ~to~ pa ~from~,
+  ki identificirata pošiljatelja in prejemnika sporočila
+
+Dve entiteti, ki želita komunicirati po protokolu XMPP morata
+vzpostaviti trajno povezavo po protokolu TCP, kateri pravimo /tok XML/
+(ang. /XML stream/). Tok je sestavljen iz posameznih sporočil, katerim
+pravimo /stance XML/ (ang. /XML stanzas/). Tako posamezne stance kot
+tudi celoten tok morajo predstavljati sintaksno veljavno besedilo
+formata XML. Primer toka je prikazan v [[https://xmpp.org/rfcs/rfc6120.html#streams-fundamentals][specifikaciji XMPP-CORE, v
+razdelku "4.1 Stream Fundamentals"]].
+
+Pri vzpostavitvi toka se lahko udeleženca dogovorita za šifriranje
+toka s protokolom TLS, ali zahtevata avtentikacijo po protokolu SASL,
+vendar je ta funkcionalnost izven obsega tega poročila.
+
+** XMPP-IM
+
+Ta specifikacija predstavlja razširitev osnovne specifikacije, in
+predpostavlja, da so entitete, udeležene v protokolu, že vzpostavile
+povezavo po protokolu opisanem v XMPP-CORE.
+
+XMPP-IM omogoča povezovanje z drugimi uporabniki oziroma kontakti. V
+žargonu XMPP pravimo seznamu kontaktov /spisek/ (ang. /roster/). Vsak
+uporabnik ima svoj lastni zasebni spisek. Spisek je shranjen na
+strežniku, na katerega je uporabnik prijavljen. Vnose v spisek
+dodajamo in odstranjujemo z uporabo sporočil vrste ~<iq>~.
+
+XMPP-IM omogoča tudi naročanje na prisotnost drugih uporabnikov
+(ang. /presence subscription/). Recimo, da se je France naročil na
+Julijino prisotnost. Če Julija strežniku sporoči, da se je njena
+prisotnost spremenila, bo strežnik Franceta obvestil o Julijini novi
+prisotnosti. Ta obvestila se prenešajo tudi med različnimi strežniki.
+
+Definiran je tudi koncept klepetalnih sej (ang. /Chat
+Session/). Med dvema entitetoma obstaja lahko ena seja, vrste
+"chat". Omogočeni so pa tudi skupinski klepeti - seja vrste
+"groupchat". Informacija o klepetalni seji je del metapodatkov
+sporočila vrste ~<message>~.
+
+** XMPP-ADDR
+
+Specifikacija XMPP-ADDR določa, kako so črke izven kodirne tabele
+ASCII predstavljene v naslovih strežnikov oziroma uporabnikov. Vse
+črke, ki niso del ASCII-ja, morajo biti del Unicodea.
+
 * Format sporočil
+
+Vsa sporočila v protokolu XMPP so predstavljena v formatu
+XML. Format osnovnih vrst sporočil je opisan spodaj.
+
+** Message
+
+Sporočilo te vrste je sestavljeno iz XML elementa ~<message>~.
+
+** Presence
+
+** IQ (Info/Query)
+
+Ta sporočila so namenjena poizvedbam in shranjevanju podatkov na
+drugih entitetah.
+
+Sporočilo te vrste je sestavljeno iz XML elementa ~<iq>~. Element mora
+vsebovati atribut ~id~, ki določa identifikator podatkov, in atribut
+~type~, ki določa vrsto zahteve. Poznamo vrste ~get~, ~set~, ~result~
+in ~error~. Ko sprožimo zahtevo, izberemo vrsto ~get~ ali ~set~, druga
+entiteta pa odgovori z ~result~, v primeru, da je zahteva bila
+uspešna, ~error~ pa v primeru, da je zahteva bila neuspešna. Telo
+elementa vsebuje vrednosti podatkov.
 
 * Literatura
 
-#+print_bibliography: 
+#+print_bibliography:
