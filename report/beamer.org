@@ -22,7 +22,7 @@
 ** Arhitektura protokola
 
 - Zgled: SMTP
-- Distributirano omrežje
+- Porazdeljeno omrežje
 - Vloge:
   - strežnik
   - uporabnik
@@ -79,15 +79,18 @@ graph LR
 
 ** Opis specifikacije
 
-- XMPP-CORE (RFC 6120) [cite:@rfc6120]
-- XMPP-IM (RFC 6121) [cite:@rfc6121]
-- XMPP-ADDR (RFC 7622) [cite:@rfc7622]
+- [[https://datatracker.ietf.org/doc/rfc6120/][Extensible Messaging and Presence Protocol (XMPP): Core]] (XMPP-CORE)
+- [[https://datatracker.ietf.org/doc/rfc6121/][Extensible Messaging
+  and Presence Protocol (XMPP): Instant Messaging and Presence]]
+  (XMPP-IM)
+- [[https://datatracker.ietf.org/doc/rfc7622/][Extensible Messaging and Presence Protocol (XMPP): Address Format]]
+  (XMPP-ADDR)
 - Razširitve (XEP)
 
 ** XMPP-CORE
 
 - Povezava po TCP: tok XML
-- Posamezno poročilo: stanca XML
+- Posamezno sporočilo: stanca XML
 - Vrste sporočil: ~<message/>~, ~<presence/>~, ~<iq/>~
 - Omogoča TLS ali SASL
 

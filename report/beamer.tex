@@ -1,4 +1,4 @@
-% Created 2025-04-10 Thu 22:56
+% Created 2025-04-11 Fri 00:20
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -198,9 +198,9 @@
 \maketitle
 
 \section{Namen in arhitektura protokola}
-\label{sec:org22cd60e}
+\label{sec:org43ecd96}
 
-\begin{frame}[label={sec:orgfb1dd64}]{Namen protokola}
+\begin{frame}[label={sec:orgccea582}]{Namen protokola}
 \begin{itemize}
 \item \emph{Extensible Messaging and Presence Protocol}
 \item "Protokol, namenjen izmenjavi strukturiranih podatkov v približno
@@ -209,10 +209,10 @@ realnem času med dvema ali več entitetami"
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org34f5cd7}]{Arhitektura protokola}
+\begin{frame}[label={sec:orgdb242ce}]{Arhitektura protokola}
 \begin{itemize}
 \item Zgled: SMTP
-\item Distributirano omrežje
+\item Porazdeljeno omrežje
 \item Vloge:
 \begin{itemize}
 \item strežnik
@@ -222,7 +222,7 @@ realnem času med dvema ali več entitetami"
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org72b7915},fragile]{Arhitektura protokola}
+\begin{frame}[label={sec:orga10567c},fragile]{Arhitektura protokola}
  \begin{itemize}
 \item Identifikator: JID (\emph{Jabber ID})
 \item Strežnik: JID je enak domeni (\texttt{jabber.si})
@@ -232,46 +232,49 @@ realnem času med dvema ali več entitetami"
 \end{frame}
 
 \section{Scenarij komunikacije}
-\label{sec:orge62d1c7}
+\label{sec:orgd6a8cb5}
 
-\begin{frame}[label={sec:org328600d}]{Lokalni uporabniki}
+\begin{frame}[label={sec:org3fb5006}]{Lokalni uporabniki}
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{images/local-server.png}
-\caption{\label{fig:org5c217f1}Komunikacija med uporabniki na istem strežniku}
+\caption{\label{fig:org3e789db}Komunikacija med uporabniki na istem strežniku}
 \end{figure}
 \end{frame}
 
-\begin{frame}[label={sec:org66b6f6d}]{Oddaljeni uporabniki}
+\begin{frame}[label={sec:orge1a6f66}]{Oddaljeni uporabniki}
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{images/cross-server.png}
-\caption{\label{fig:orgb4d1c67}Komunikacija med uporabniki na različnih strežnikih}
+\caption{\label{fig:orgeb5874d}Komunikacija med uporabniki na različnih strežnikih}
 \end{figure}
 \end{frame}
 
 \section{Opis specifikacije}
-\label{sec:orgf9f5e0d}
+\label{sec:orgf16b136}
 
-\begin{frame}[label={sec:org0a7019a}]{Opis specifikacije}
+\begin{frame}[label={sec:orgb116f60}]{Opis specifikacije}
 \begin{itemize}
-\item XMPP-CORE (RFC 6120) (Peter Saint-Andre, 2011)
-\item XMPP-IM (RFC 6121) (Peter Saint-Andre, 2011a)
-\item XMPP-ADDR (RFC 7622) (Peter Saint-Andre, 2015)
+\item \href{https://datatracker.ietf.org/doc/rfc6120/}{Extensible Messaging and Presence Protocol (XMPP): Core} (XMPP-CORE)
+\item \href{https://datatracker.ietf.org/doc/rfc6121/}{Extensible Messaging
+and Presence Protocol (XMPP): Instant Messaging and Presence}
+(XMPP-IM)
+\item \href{https://datatracker.ietf.org/doc/rfc7622/}{Extensible Messaging and Presence Protocol (XMPP): Address Format}
+(XMPP-ADDR)
 \item Razširitve (XEP)
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org29df804},fragile]{XMPP-CORE}
+\begin{frame}[label={sec:org2dfbaca},fragile]{XMPP-CORE}
  \begin{itemize}
 \item Povezava po TCP: tok XML
-\item Posamezno poročilo: stanca XML
+\item Posamezno sporočilo: stanca XML
 \item Vrste sporočil: \texttt{<message/>}, \texttt{<presence/>}, \texttt{<iq/>}
 \item Omogoča TLS ali SASL
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgc123230},fragile]{XMPP-IM}
+\begin{frame}[label={sec:orga1eb00d},fragile]{XMPP-IM}
  \begin{itemize}
 \item Klepetalne seje (\texttt{chat} ali \texttt{groupchat})
 \item Spisek (\emph{roster})
@@ -279,13 +282,13 @@ realnem času med dvema ali več entitetami"
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org0123109}]{XMPP-ADDR}
+\begin{frame}[label={sec:org7b82a12}]{XMPP-ADDR}
 \begin{itemize}
 \item Kodiranje črk, ki so del kodirnega sistema Unicode
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgd619065}]{Razširitve}
+\begin{frame}[label={sec:orgbc13993}]{Razširitve}
 \begin{itemize}
 \item \href{https://xmpp.org/extensions/xep-0045.html}{Multi-User Chat (XEP-0045)} - podrobneje določa delovanje skupinskih
 klepetov, ki so omenjeni že v XMPP-IM (Saint-Andre, Peter, 2002),
@@ -299,9 +302,9 @@ prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
 \end{frame}
 
 \section{Format sporočil}
-\label{sec:orgd9dd79c}
+\label{sec:orgf41f4a2}
 
-\begin{frame}[label={sec:org3d6907c},fragile]{Message}
+\begin{frame}[label={sec:org86e2948},fragile]{Message}
  \begin{Code}
 \begin{Verbatim}
 \color{EFD}<\textcolor[HTML]{0000ff}{message} \textcolor[HTML]{a0522d}{from}=\EFs{'france@jabber.si/hiša'}
@@ -321,7 +324,7 @@ prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
 (Prešeren, France, 1999)
 \end{frame}
 
-\begin{frame}[label={sec:org6b47b4c},fragile]{Presence}
+\begin{frame}[label={sec:org2cbe184},fragile]{Presence}
  \begin{Code}
 \begin{Verbatim}
 \color{EFD}<\textcolor[HTML]{0000ff}{presence} \textcolor[HTML]{483d8b}{xml}:\textcolor[HTML]{a0522d}{lang}=\EFs{'si'}>
@@ -337,7 +340,7 @@ prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
 (Prešeren, France, 1999)
 \end{frame}
 
-\begin{frame}[label={sec:org201c812},fragile]{IQ (Info/Query)}
+\begin{frame}[label={sec:org974c2f8},fragile]{IQ (Info/Query)}
  Zahteva za pridobivanje spiska
 
 \begin{Code}
@@ -351,7 +354,7 @@ prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
 \end{Code}
 \end{frame}
 
-\begin{frame}[label={sec:org34c80f1},fragile]{IQ (Info/Query)}
+\begin{frame}[label={sec:org60cf44c},fragile]{IQ (Info/Query)}
  Odgovor strežnika na zahtevo
 
 \begin{Code}
@@ -369,20 +372,11 @@ prenos datotek (Saint-Andre, Peter and Stout, Lance, 2008)
 \end{frame}
 
 \section{Literatura}
-\label{sec:orgd5e69b1}
+\label{sec:org15a6bd0}
 
-\begin{frame}[label={sec:org1498403}]{Literatura}
+\begin{frame}[label={sec:org6e8e701}]{Literatura}
 \noindent
 Ludwig, Scott and Beda, Joe and Saint-Andre, Peter and McQueen, Robert and Egan, Sean and Hildebrand, Joe (2005). \emph{Jingle}, XMPP Standards Foundation.
-
-\noindent
-Peter Saint-Andre (2011). \emph{{Extensible Messaging and Presence Protocol (XMPP): Core}}, RFC Editor.
-
-\noindent
-Peter Saint-Andre (2011a). \emph{{Extensible Messaging and Presence Protocol (XMPP): Instant Messaging and Presence}}, RFC Editor.
-
-\noindent
-Peter Saint-Andre (2015). \emph{{Extensible Messaging and Presence Protocol (XMPP): Address Format}}, RFC Editor.
 
 \noindent
 Prešeren, France (1999). \emph{Poezije}, Mladinska knjiga.
